@@ -16,14 +16,17 @@ import (
 	"time"
 )
 
-var initUpTo = 100
+
+
+
 
 
 func main(){
 
 
 
-	var numTh int = 8
+	var numTh int  = 8
+
 	var upTo int = 100000000
 
 	// benchmark
@@ -54,7 +57,7 @@ func main(){
 	GoPrime(numTh, upTo)
 	elapsed := time.Since(start)
 
-	log.Printf("Multi thread brute force time: %s",elapsed)
+	log.Printf("Multi thread sieve time: %s",elapsed)
 }
 
 /*
@@ -80,107 +83,106 @@ func CheckPrime(n int)bool{
 
 }
 
+
+
+
 /*nums some helper functions and merges the lists of primes*/
 func GoPrime(numTh int, upTo int) {
-
-	// create a buffer channel with numTh slots. threads will report their list of primes on completion
-	lists := make(chan []int, numTh)
-	done := make(chan bool, numTh)
-
-	//var buffer bytes.Buffer
-
-	// give each thread a start value then check <start value>+ k*numTh values
-	//for each thread call ParallelPrimes
-	for i:=0;i<numTh;i++{
-		// start with the first numTh odds after 2. 3,5,7, ...ect
-
-		go ParallelPrimes(done, lists, i, numTh, upTo)
-	}
-
-
-	// make sure each thread is done
-	for i:=0;i<numTh;i++{
-		<-done
-	}
-
-	/*
-	// parallelized merge
-	for len(lists) >1{
-		buffer.WriteString( IntSliceToString(<-lists))
-		//mergeLists(list)
-	}
-	*/
 
 	primesInfo ,err := os.OpenFile("primes.txt", os.O_RDWR,0666)
 
 	if err != nil{
 		log.Fatal(err)
 	}
-
 	//clear file and set cursor to beginning
 	primesInfo.Truncate(0)
 	primesInfo.Seek(0,0)
 
 
 
+	primes := ParallelSieveOfEratosthenes(upTo,numTh)
+		n:=10
+
+	finalSum := sumSlice(primes)
+	finalCount:= len(primes)
+	//nLargest := primes[finalCount-n:]
 
 
+	// write info to file
+	primesInfo.WriteString(fmt.Sprintf("Primes up to: %d\n",upTo) )
+	primesInfo.WriteString(fmt.Sprintf("Sum: %d\n",finalSum) )
+	primesInfo.WriteString(fmt.Sprintf("Count: %d\n",finalCount) )
+	primesInfo.WriteString(fmt.Sprintf("%d Largest:\n",n) )
+	/*
+	for _, num := range nLargest{
+		primesInfo.WriteString(fmt.Sprintf("\t%d\n",num) )
+	}
+	*/
 }
-/*creates the threads */
-func ParallelPrimes(done chan<- bool, lists chan<- []int, start int, numTh int, upTo int){
-	primes := []int{}
 
-	// starting thread start
-	fmt.Printf("Starting thread %d\n", start)
+func Pf(done chan<-bool,start int,p int,integers []bool, upTo int, numTh int){
+	for i := p * (2+start); i <= upTo; i += p*numTh {
+		integers[i] = false
+	}
+	done<-true
+}
+func ParallelFilter( p int,integers []bool, upTo int, numTh int){
 
-	startTime := time.Now()
+	done := make(chan bool, numTh)
+	// make numTh threads
+	for j:=0;j<numTh;j++ {
 
-	jumpAmt := numTh
-	// if even jump amt is 2*numTh
-	if numTh%2 == 0{
-		jumpAmt = 2*numTh
+
+		go Pf(done, j, p, integers, upTo, numTh)
+
+	}
+
+	// make sure filter is done
+	for i:=0;i<numTh;i++{
+		<-done
+	}
+}
+
+
+/*
+From: https://siongui.github.io/2017/04/17/go-sieve-of-eratosthenes/
+modified for parallelism
+*/
+func ParallelSieveOfEratosthenes(upTo int, numTh int) []int {
+	// Create a boolean array "prime[0..n]" and initialize
+	// all entries it as true. A value in prime[i] will
+	// finally be false if i is Not a prime, else true.
+	integers := make([]bool, upTo+1)
+	for i := 2; i < upTo+1; i++ {
+		integers[i] = true
 	}
 
 
-	for i:=3+start*2;i<upTo;i+=jumpAmt{
-		if CheckPrime(i){
-			primes = append(primes,i)
+
+	for p := 2; p*p <= upTo; p++ {
+		// If integers[p] is not changed, then it is a prime
+		if integers[p] == true {
+			// Update all multiples of p
+			ParallelFilter(p, integers, upTo, numTh)
+
+		}
+
+
+	}
+
+	var primes []int
+	for p := 2; p <= upTo; p++ {
+		if integers[p] == true {
+			primes = append(primes, p)
 		}
 	}
 
-
-	elapsed := time.Since(startTime)
-	fmt.Printf("Finished thread %d in %s\n", start, elapsed)
-	fmt.Printf("\tNum Found: %d\n",len(primes))
-	if len(primes)!=0{
-		fmt.Printf("\tMax: %d\n",primes[len(primes)-1])
-	}
-
-
-
-	lists<-primes
-	done<-true
-
+	return primes
 
 }
 
-/**/
-func ProbPrimeCheck(n int) bool{
 
-	// using Baillie–PSW primality test https://en.wikipedia.org/wiki/Baillie%E2%80%93PSW_primality_test
 
-	// let n be an odd positive int that we wish to check for primality
-
-	// trial division of small primes upto 100? (use simplePrimeCheck alg)
-
-	// base 2 strong probable prime test. If n is not a strong probable prime base 2, then n is composite; quit. https://en.wikipedia.org/wiki/Strong_pseudoprime
-
-	// Find the first D in the sequence 5, −7, 9, −11, 13, −15, ... [(5+2i)*-1^i, i starts at 0] for which the Jacobi symbol (D/n) is −1. Set P = 1 and Q = (1 − D) / 4.
-
-	// Perform a strong Lucas probable prime test on n using parameters D, P, and Q. If n is not a strong Lucas probable prime, then n is composite. Otherwise, n is almost certainly prime.
-
-	return true
-}
 
 /*
 returns true if int n is prime, false otherwise
@@ -208,11 +210,21 @@ func SimplePrimeCheck(n int, start int, max int)bool{
 		return true
 	}
 }
+
+
+/*takes an int slice and returns a uint64*/
+func sumSlice(nums []int)uint64{
+	var sum uint64 = 0
+	for _, num :=range nums{
+		sum += uint64(num)
+	}
+	return sum
+}
 /*
 from: https://www.dotnetperls.com/convert-slice-string-go
 */
 func IntSliceToString(nums []int)string{
-	valuesText := []string{}
+	var valuesText []string
 
 	// Create a string slice using strconv.Itoa.
 	// ... Append strings to it.

@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1610ea30-3ae7-415b-9cfc-f5e7544af48f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/rax.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/primes_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/primesPSiev1.go.bac" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/primes.go" beforeDir="false" afterPath="$PROJECT_DIR$/primes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/primes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/primes.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,11 +18,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/primes.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+            <state relative-caret-position="390">
+              <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
               <folding>
-                <element signature="e#19#81#0" expanded="true" />
-                <element signature="e#176#592#0" />
+                <element signature="n#!!block;n#ParallelPrimes#0" />
+                <element signature="n#!!block;n#ProbPrimeCheck#0" />
               </folding>
             </state>
           </provider>
@@ -54,18 +54,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../sf_goAssignments/2-disk/pa2_test.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="52" column="42" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="42" />
-              <folding>
-                <element signature="e#520#679#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -74,6 +62,13 @@
         <option value="Go File" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>filt</find>
+      <find>ParallelPrimes</find>
+      <find>Filter</find>
+    </findStrings>
   </component>
   <component name="GOROOT" path="/snap/go/current" />
   <component name="Git.Settings">
@@ -84,15 +79,16 @@
       <list>
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/primes_test.go" />
+        <option value="$PROJECT_DIR$/primes.txt" />
         <option value="$PROJECT_DIR$/primes.go" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="872" />
+    <option name="x" value="75" />
     <option name="y" value="24" />
-    <option name="width" value="808" />
-    <option name="height" value="1026" />
+    <option name="width" value="928" />
+    <option name="height" value="906" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -124,6 +120,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../sf_goAssignments/2-disk/pa2_test.go" />
     <property name="settings.editor.selected.configurable" value="go.sdk" />
   </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -136,7 +137,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Test.go test parallelPrimes">
+  <component name="RunManager" selected="Go Build.go build primes.go">
     <configuration name="go build primes.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="parallelPrimes" />
       <working_directory value="$PROJECT_DIR$/" />
@@ -183,24 +184,33 @@
       <configuration name="go test parallelPrimes" configurationId="GoTestRunConfiguration" />
     </history-entry>
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="872" y="24" width="808" height="1026" extended-state="4" />
+    <frame x="75" y="24" width="928" height="906" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16929133" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30272108" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.39173967" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3992095" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.4543179" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39827773" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32889965" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.27140975" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.23804227" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.24775353" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -252,6 +262,20 @@
     </option>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file:///snap/go/current/src/runtime/sys_linux_amd64.s">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2001">
+          <caret line="531" selection-start-line="531" selection-end-line="531" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/primesPSiev1.go.bac">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -284,11 +308,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/primes.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+        <state relative-caret-position="390">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
           <folding>
-            <element signature="e#19#81#0" expanded="true" />
-            <element signature="e#176#592#0" />
+            <element signature="n#!!block;n#ParallelPrimes#0" />
+            <element signature="n#!!block;n#ProbPrimeCheck#0" />
           </folding>
         </state>
       </provider>
