@@ -11,8 +11,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -29,64 +27,18 @@ func main(){
 
 	var upTo int = 100000000
 
-	// benchmark
-	/*
-	var primes = []int{}
 
-	start := time.Now()
-	// simple single thread brute force approach
-	for i := 3; i < upTo; i+=2{
-		if SimplePrimeCheck(i,0,i){
-			primes = append(primes,i)
-		}
-	}
-
-	primesStr := IntSliceToString(primes)
-
-	err:=ioutil.WriteFile("primes.txt",[]byte(primesStr),0)
-
-	if err != nil{
-		log.Fatal(err)
-	}
-
-	elapsed := time.Since(start)
-
-	log.Printf("Single thread brute force time: %s",elapsed)
-	*/
-	start := time.Now()
 	GoPrime(numTh, upTo)
-	elapsed := time.Since(start)
 
-	log.Printf("Multi thread sieve time: %s",elapsed)
-}
 
-/*
-using both probabilistic and simple deterministic checks, quickly (hopefully) determines if a number is prime
-*/
-func CheckPrime(n int)bool{
-
-	return SimplePrimeCheck(n, 0, n)
-	/*
-	//res := SimplePrimeCheck(n, 0, initUpTo)
-	res:= true
-	if res {
-		// using Baillie–PSW primality test https://en.wikipedia.org/wiki/Baillie%E2%80%93PSW_primality_test
-		res = ProbPrimeCheck(n)
-
-		if res{
-			// check found primes with simplePrimeCheck
-			res = SimplePrimeCheck(n, 0, n)
-		}
-	}
-	return res
-	*/
 
 }
 
 
 
 
-/*nums some helper functions and merges the lists of primes*/
+
+/*runs some helper functions and prints results fo primes.txt*/
 func GoPrime(numTh int, upTo int) {
 
 	primesInfo ,err := os.OpenFile("primes.txt", os.O_RDWR,0666)
@@ -99,25 +51,35 @@ func GoPrime(numTh int, upTo int) {
 	primesInfo.Seek(0,0)
 
 
-
+	// start timer
+	start := time.Now()
 	primes := ParallelSieveOfEratosthenes(upTo,numTh)
-		n:=10
-
+	// end timer
+	elapsed := time.Since(start)
 	finalSum := sumSlice(primes)
 	finalCount:= len(primes)
-	//nLargest := primes[finalCount-n:]
+	n:=10
+
+	if finalCount < 10{
+		n =finalCount
+	}
+
+
+
+	nLargest := primes[finalCount-n:]
 
 
 	// write info to file
 	primesInfo.WriteString(fmt.Sprintf("Primes up to: %d\n",upTo) )
+	primesInfo.WriteString(fmt.Sprintf("Run time with %d threads: %s\n",numTh,elapsed) )
 	primesInfo.WriteString(fmt.Sprintf("Sum: %d\n",finalSum) )
 	primesInfo.WriteString(fmt.Sprintf("Count: %d\n",finalCount) )
 	primesInfo.WriteString(fmt.Sprintf("%d Largest:\n",n) )
-	/*
+
 	for _, num := range nLargest{
 		primesInfo.WriteString(fmt.Sprintf("\t%d\n",num) )
 	}
-	*/
+
 }
 
 func Pf(done chan<-bool,start int,p int,integers []bool, upTo int, numTh int){
@@ -170,6 +132,7 @@ func ParallelSieveOfEratosthenes(upTo int, numTh int) []int {
 
 	}
 
+	// get prime numbers
 	var primes []int
 	for p := 2; p <= upTo; p++ {
 		if integers[p] == true {
@@ -220,21 +183,4 @@ func sumSlice(nums []int)uint64{
 	}
 	return sum
 }
-/*
-from: https://www.dotnetperls.com/convert-slice-string-go
-*/
-func IntSliceToString(nums []int)string{
-	var valuesText []string
 
-	// Create a string slice using strconv.Itoa.
-	// ... Append strings to it.
-	for i := range nums {
-		number := nums[i]
-		text := strconv.Itoa(number)
-		valuesText = append(valuesText, text)
-	}
-
-	// Join our string slice.
-	result := strings.Join(valuesText, " ")
-	return result
-}
