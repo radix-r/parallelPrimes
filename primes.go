@@ -1,14 +1,16 @@
 /*
+By Ross Wagner
 
-<execution time>  <total number of
-primes found>  <sum of all primes found>
-< top ten maximum primes, listed in order from lowest to highest>
+Finds prime numbers less than 10^8 using a parallelized sieve.
+
+outputs <execution time>  <total number of primes found>  <sum of all primes found> < top ten maximum primes, listed in order from lowest to highest> into primes.txt
 
 */
 package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -40,6 +42,11 @@ func main(){
 
 /*runs some helper functions and prints results fo primes.txt*/
 func GoPrime(numTh int, upTo int) {
+
+	err := ioutil.WriteFile("primes.txt", []byte(""), 0755)
+	if err != nil {
+		fmt.Printf("Unable to write file: %v", err)
+	}
 
 	primesInfo ,err := os.OpenFile("primes.txt", os.O_RDWR,0666)
 
